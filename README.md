@@ -1,7 +1,6 @@
 # flutter_crud
 
-Una aplicación Flutter sencilla que demuestra operaciones básicas de **CRUD (Crear, Leer, Actualizar, Eliminar)**
-utilizando **Firebase** como backend.
+Una aplicación Flutter sencilla que demuestra operaciones básicas de **CRUD (Crear, Leer, Actualizar, Eliminar)** utilizando **Firebase** como backend.
 
 ## 🚀 Funcionalidades
 
@@ -10,11 +9,11 @@ utilizando **Firebase** como backend.
 - ✅ Agregar, editar, eliminar y mostrar datos en tiempo real
 - 🧪 Ideal como proyecto de aprendizaje o plantilla inicial
 
-## 📦 Para comenzar
+## 📦 Comenzando
 
 Para ejecutar este proyecto localmente:
 
 1. Clona el repositorio:
    ```bash
-   git clone https://github.com/Angel453-jpg/flutter-crud.git
-    ```
+   git clone https://github.com/tu-usuario/flutter_crud.git
+   cd flutter_crud
