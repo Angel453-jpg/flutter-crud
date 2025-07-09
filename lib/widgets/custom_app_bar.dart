@@ -22,28 +22,17 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               context,
               listen: false,
             );
-            String mensaje = '';
 
             if (value == 'light') {
               themeProvider.setThemeMode(ThemeMode.light);
-              mensaje = '🌞 Modo claro activado';
             } else if (value == 'dark') {
               themeProvider.setThemeMode(ThemeMode.dark);
-              mensaje = '🌙 Modo oscuro activado';
             } else if (value == 'system') {
               themeProvider.setThemeMode(ThemeMode.system);
-              mensaje = '🖥️ Modo predeterminado por el sistema activado';
             }
-
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(mensaje),
-                duration: const Duration(seconds: 2),
-                behavior: SnackBarBehavior.floating,
-              ),
-            );
           },
-          itemBuilder: (context) => [
+          itemBuilder: (context) =>
+          [
             const PopupMenuItem(
               value: 'light',
               child: ListTile(
