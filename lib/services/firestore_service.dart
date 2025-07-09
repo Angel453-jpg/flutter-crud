@@ -18,4 +18,8 @@ class FirestoreService {
       'Precio': price,
     });
   }
+
+  Stream<QuerySnapshot> getCellphonesStream(){
+    return cellphones.orderBy('Marca').snapshots();
+  }
 }

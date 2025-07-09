@@ -56,7 +56,39 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: showCellphoneDialog,
         child: const Icon(Icons.add),
       ),
-      body: const Center(child: Text("Aquí ira la lista de celulares")),
+      body: StreamBuilder(
+        stream: dbService.getCellphonesStream(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            return const Center(child: Text("❌ Error al cargar los datos"));
+          }
+
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return const Center(child: Text("📱 No hay celulares registrados"));
+          }
+
+          final docs = snapshot.data!.docs;
+
+          return ListView.builder(
+            itemCount: docs.length,
+            itemBuilder: (context, index) {
+              final cellphone = docs[index];
+              return ListTile(
+                leading: const Icon(Icons.phone_android),
+                title: Text(cellphone['Marca'] ?? ''),
+                subtitle: Text(
+                  "${cellphone['Modelo'] ?? ''} - ${cellphone['Almacenamiento'] ?? ''}",
+                ),
+                trailing: Text("\$${cellphone['Precio'].toString()}"),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
