@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_crud/dialogs/add_cellphone_dialog.dart';
 import 'package:flutter_crud/services/firestore_service.dart';
+import 'package:flutter_crud/widgets/cellphone_list.dart';
 import 'package:flutter_crud/widgets/custom_app_bar.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -20,31 +21,71 @@ class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController storageController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
 
-  void showCellphoneDialog() {
-    showDialog(
+  void showCellphoneDialog({
+    String? docId,
+    String? brand,
+    String? model,
+    String? storage,
+    String? price,
+  }) {
+    brandController.text = brand ?? '';
+    modelController.text = model ?? '';
+    storageController.text = storage ?? '';
+    priceController.text = price ?? '';
+
+    showGeneralDialog(
       context: context,
-      builder: (context) => AddCellphoneDialog(
-        brandController: brandController,
-        modelController: modelController,
-        storageController: storageController,
-        priceController: priceController,
-        onConfirm: () {
-          final double? price = double.tryParse(priceController.text);
-          if (price != null) {
-            dbService.addCellphone(
-              brandController.text,
-              modelController.text,
-              storageController.text,
-              price,
-            );
-            brandController.clear();
-            modelController.clear();
-            storageController.clear();
-            priceController.clear();
-            Navigator.of(context).pop();
-          }
-        },
-      ),
+      barrierDismissible: true,
+      barrierLabel: 'Agregar/Editar',
+      transitionDuration: const Duration(milliseconds: 300),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return Center(
+          child: Material(
+            color: Colors.transparent,
+            child: AddCellphoneDialog(
+              brandController: brandController,
+              modelController: modelController,
+              storageController: storageController,
+              priceController: priceController,
+              isEditing: docId != null,
+              onConfirm: () {
+                final double? parsedPrice = double.tryParse(
+                  priceController.text,
+                );
+                if (parsedPrice != null) {
+                  if (docId == null) {
+                    dbService.addCellphone(
+                      brandController.text,
+                      modelController.text,
+                      storageController.text,
+                      parsedPrice,
+                    );
+                  } else {
+                    dbService.updateCellphone(
+                      docId,
+                      brandController.text,
+                      modelController.text,
+                      storageController.text,
+                      parsedPrice,
+                    );
+                  }
+                  brandController.clear();
+                  modelController.clear();
+                  storageController.clear();
+                  priceController.clear();
+                  Navigator.of(context).pop();
+                }
+              },
+            ),
+          ),
+        );
+      },
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        return ScaleTransition(
+          scale: CurvedAnimation(parent: animation, curve: Curves.easeOutBack),
+          child: child,
+        );
+      },
     );
   }
 
@@ -56,36 +97,14 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: showCellphoneDialog,
         child: const Icon(Icons.add),
       ),
-      body: StreamBuilder(
-        stream: dbService.getCellphonesStream(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (snapshot.hasError) {
-            return const Center(child: Text("❌ Error al cargar los datos"));
-          }
-
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text("📱 No hay celulares registrados"));
-          }
-
-          final docs = snapshot.data!.docs;
-
-          return ListView.builder(
-            itemCount: docs.length,
-            itemBuilder: (context, index) {
-              final cellphone = docs[index];
-              return ListTile(
-                leading: const Icon(Icons.phone_android),
-                title: Text(cellphone['Marca'] ?? ''),
-                subtitle: Text(
-                  "${cellphone['Modelo'] ?? ''} - ${cellphone['Almacenamiento'] ?? ''}",
-                ),
-                trailing: Text("\$${cellphone['Precio'].toString()}"),
-              );
-            },
+      body: CellphoneList(
+        onEdit: (cellphone, docId) {
+          showCellphoneDialog(
+            docId: docId,
+            brand: cellphone['Marca'],
+            model: cellphone['Modelo'],
+            storage: cellphone['Almacenamiento'],
+            price: cellphone['Precio']?.toString(),
           );
         },
       ),
