@@ -42,7 +42,17 @@ class CellphoneList extends StatelessWidget {
               onEdit: () => onEdit(cellphone, doc.id),
               onDelete: () => showDeleteConfirmationDialog(
                 context: context,
-                onConfirm: () => dbService.deleteCellphone(doc.id),
+                onConfirm: () {
+                  dbService.deleteCellphone(doc.id);
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('✅ Celular eliminado correctamente'),
+                      duration: Duration(seconds: 2),
+                      behavior: SnackBarBehavior.fixed,
+                    ),
+                  );
+                },
               ),
             );
           },

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_crud/dialogs/add_cellphone_dialog.dart';
 import 'package:flutter_crud/services/firestore_service.dart';
 import 'package:flutter_crud/widgets/cellphone_list.dart';
-import 'package:flutter_crud/widgets/custom_app_bar.dart';
+import 'package:flutter_crud/widgets/side_menu_drawer.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -74,6 +74,20 @@ class _MyHomePageState extends State<MyHomePage> {
                   storageController.clear();
                   priceController.clear();
                   Navigator.of(context).pop();
+
+                  if (!mounted) return;
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        docId == null
+                            ? '📱 Celular registrado exitosamente'
+                            : '✏️ Celular actualizado exitosamente',
+                      ),
+                      duration: const Duration(seconds: 2),
+                      behavior: SnackBarBehavior.fixed,
+                    ),
+                  );
                 }
               },
             ),
@@ -92,7 +106,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: widget.title),
+      appBar: AppBar(title: Text(widget.title)),
+      drawer: const SideMenuDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: showCellphoneDialog,
         child: const Icon(Icons.add),
