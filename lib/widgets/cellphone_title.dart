@@ -14,26 +14,43 @@ class CellphoneTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: const Icon(Icons.phone_android),
-      title: Text(cellphone['Marca'] ?? ''),
-      subtitle: Text(
-        "${cellphone['Modelo'] ?? ''} - ${cellphone['Almacenamiento'] ?? ''} - \$${cellphone['Precio']?.toStringAsFixed(2) ?? '0.00'}",
-      ),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-            onPressed: onEdit,
-            icon: const Icon(Icons.edit),
-            color: Colors.orange,
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 12,
+        ),
+        leading: const Icon(Icons.phone_android, size: 32),
+        title: Text(
+          cellphone['Marca'] ?? '',
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        ),
+        subtitle: Text(
+          "${cellphone['Modelo'] ?? ''} - ${cellphone['Almacenamiento'] ?? ''} - \$${cellphone['Precio']?.toStringAsFixed(2) ?? '0.00'}",
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.color?.withAlpha(178),
           ),
-          IconButton(
-            onPressed: onDelete,
-            icon: const Icon(Icons.delete),
-            color: Colors.red,
-          ),
-        ],
+        ),
+        trailing: Wrap(
+          spacing: 8,
+          children: [
+            IconButton(
+              onPressed: onEdit,
+              icon: const Icon(Icons.edit, color: Colors.orange),
+              tooltip: 'Editar',
+            ),
+            IconButton(
+              onPressed: onDelete,
+              icon: const Icon(Icons.delete, color: Colors.red),
+              tooltip: 'Eliminar',
+            ),
+          ],
+        ),
       ),
     );
   }
