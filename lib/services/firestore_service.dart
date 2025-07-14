@@ -1,21 +1,40 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class FirestoreService {
-  final CollectionReference cellphones = FirebaseFirestore.instance.collection(
-    'cellphones',
-  );
+  //Obtiene el ID del usuario autenticado
+  String? get currentUserId => FirebaseAuth.instance.currentUser?.uid;
 
-  Stream<QuerySnapshot> getCellphonesStream() {
-    return cellphones.orderBy('Marca').snapshots();
+  //Referencia a la colección de celulares del usuario actual
+  CollectionReference get userCellphones {
+    final uid = currentUserId;
+    if (uid == null) {
+      throw Exception('Usuario no autenticado');
+    }
+
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('cellphones');
   }
 
+  //Stream de los celulares del usuario actual, ordenados por marca
+  Stream<QuerySnapshot> getCellphonesStream() {
+    try {
+      return userCellphones.orderBy('Marca').snapshots();
+    } catch (_) {
+      return const Stream.empty();
+    }
+  }
+
+  //Agrega un nuevo celular a la colección del usuario
   Future<void> addCellphone(
     String brand,
     String model,
     String storage,
     double price,
   ) {
-    return cellphones.add({
+    return userCellphones.add({
       'Marca': brand,
       'Modelo': model,
       'Almacenamiento': storage,
@@ -23,6 +42,7 @@ class FirestoreService {
     });
   }
 
+  //Actualiza un celular existente en la colección del usuario
   Future<void> updateCellphone(
     String docId,
     String brand,
@@ -30,7 +50,7 @@ class FirestoreService {
     String storage,
     double price,
   ) {
-    return cellphones.doc(docId).update({
+    return userCellphones.doc(docId).update({
       'Marca': brand,
       'Modelo': model,
       'Almacenamiento': storage,
@@ -38,7 +58,8 @@ class FirestoreService {
     });
   }
 
+  //Elimina un celular de la colección del usuario
   Future<void> deleteCellphone(String docId) {
-    return cellphones.doc(docId).delete();
+    return userCellphones.doc(docId).delete();
   }
 }

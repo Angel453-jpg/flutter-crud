@@ -1,17 +1,22 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_crud/firebase_options.dart';
+import 'package:flutter_crud/config/firebase_options.dart';
+import 'package:flutter_crud/providers/auth_provider.dart';
 import 'package:flutter_crud/providers/theme_provider.dart';
+import 'package:flutter_crud/screens/login/login_screen.dart';
 import 'package:flutter_crud/screens/my_home_page.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  
+
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemeProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+      ],
       child: const MyApp(),
     ),
   );
@@ -23,6 +28,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    final authProvider = Provider.of<AuthProvider>(context);
 
     return MaterialApp(
       title: "Flutter CRUD celulares",
@@ -33,7 +39,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
       ),
       darkTheme: ThemeData.dark(),
-      home: const MyHomePage(title: 'Gestion de Celulares'),
+      home: authProvider.user == null
+          ? LoginScreen()
+          : const MyHomePage(title: 'Gestión de Celulares'),
     );
   }
 }
