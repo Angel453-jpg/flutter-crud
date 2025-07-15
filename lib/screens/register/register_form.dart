@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_crud/providers/auth_provider.dart';
 import 'package:flutter_crud/routes/app_routes.dart';
-import 'package:flutter_crud/screens/register/register_controller.dart';
+import 'package:flutter_crud/controllers/register_controller.dart';
 import 'package:provider/provider.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -84,20 +84,25 @@ class _RegisterFormState extends State<RegisterForm> {
               onPressed: () async {
                 if (!widget.controller.validateForm()) return;
 
-                final success = await authProvider.register(
+                final errorMessage = await authProvider.register(
                   email: widget.controller.emailController.text.trim(),
                   password: widget.controller.passwordController.text.trim(),
                   nombre: widget.controller.nameController.text.trim(),
                   apellido: widget.controller.lastNameController.text.trim(),
                 );
 
-                if (!success && context.mounted) {
+                if (errorMessage != null && context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('❌ Error al registrarse')),
+                    SnackBar(content: Text('❌ Error: $errorMessage')),
                   );
-                } else if (context.mounted) {
+                  return;
+                }
+
+                if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('✅ Registro exitoso')),
+                    const SnackBar(
+                      content: Text('✅ Cuenta creada exitosamente'),
+                    ),
                   );
                   Navigator.pushReplacementNamed(context, AppRoutes.login);
                 }

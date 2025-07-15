@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_crud/screens/register/register_controller.dart';
+import 'package:flutter_crud/controllers/register_controller.dart';
 import 'package:flutter_crud/screens/register/register_form.dart';
 
 class RegisterScreen extends StatefulWidget {
