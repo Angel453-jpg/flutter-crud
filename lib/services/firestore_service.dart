@@ -34,11 +34,15 @@ class FirestoreService {
     String storage,
     double price,
   ) {
+    final now = DateTime.now();
+
     return userCellphones.add({
       'Marca': brand,
       'Modelo': model,
       'Almacenamiento': storage,
       'Precio': price,
+      'log': now,
+      'logmod': now,
     });
   }
 
@@ -55,6 +59,7 @@ class FirestoreService {
       'Modelo': model,
       'Almacenamiento': storage,
       'Precio': price,
+      'logmod': Timestamp.now(),
     });
   }
 

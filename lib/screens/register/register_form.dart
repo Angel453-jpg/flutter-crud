@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_crud/providers/auth_provider.dart';
+import 'package:flutter_crud/routes/app_routes.dart';
 import 'package:flutter_crud/screens/register/register_controller.dart';
 import 'package:provider/provider.dart';
 
@@ -98,7 +99,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('✅ Registro exitoso')),
                   );
-                  Navigator.of(context).pop();
+                  Navigator.pushReplacementNamed(context, AppRoutes.login);
                 }
               },
               style: _buttonStyle(),
@@ -111,7 +112,9 @@ class _RegisterFormState extends State<RegisterForm> {
             child: ElevatedButton.icon(
               icon: const Icon(Icons.arrow_back),
               label: const Text('Regresar'),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, AppRoutes.login);
+              },
               style: _buttonStyle(),
             ),
           ),
