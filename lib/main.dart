@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_crud/config/firebase_options.dart';
 import 'package:flutter_crud/providers/auth_provider.dart';
 import 'package:flutter_crud/providers/theme_provider.dart';
-import 'package:flutter_crud/screens/login/login_screen.dart';
-import 'package:flutter_crud/screens/my_home_page.dart';
+import 'package:flutter_crud/routes/app_routes.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -39,9 +38,10 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
       ),
       darkTheme: ThemeData.dark(),
-      home: authProvider.user == null
-          ? LoginScreen()
-          : const MyHomePage(title: 'Gestión de Celulares'),
+      initialRoute: authProvider.user == null
+          ? AppRoutes.login
+          : AppRoutes.home,
+      routes: AppRoutes.routes,
     );
   }
 }

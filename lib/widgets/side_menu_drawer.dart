@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_crud/providers/auth_provider.dart';
-import 'package:flutter_crud/screens/login/login_screen.dart';
-import 'package:flutter_crud/screens/theme/theme_settings_screen.dart';
+import 'package:flutter_crud/routes/app_routes.dart';
 import 'package:provider/provider.dart';
 
 class SideMenuDrawer extends StatelessWidget {
@@ -50,9 +49,7 @@ class SideMenuDrawer extends StatelessWidget {
             title: const Text('Temas'),
             onTap: () {
               Navigator.of(context).pop();
-              Navigator.of(
-                context,
-              ).push(MaterialPageRoute(builder: (_) => ThemeSettingsScreen()));
+              Navigator.pushNamed(context, AppRoutes.themeSettings);
             },
           ),
           ListTile(
@@ -63,8 +60,9 @@ class SideMenuDrawer extends StatelessWidget {
               await Provider.of<AuthProvider>(context, listen: false).logout();
 
               if (context.mounted) {
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (_) => LoginScreen()),
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  AppRoutes.login,
                   (route) => false,
                 );
               }

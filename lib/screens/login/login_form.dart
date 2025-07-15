@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_crud/routes/app_routes.dart';
 import 'package:flutter_crud/screens/login/login_button.dart';
-
-import '../register/register_screen.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -97,10 +96,7 @@ class _LoginFormState extends State<LoginForm> {
                 const SizedBox(height: 10),
                 TextButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const RegisterScreen()),
-                    );
+                    Navigator.pushNamed(context, AppRoutes.register);
                   },
                   child: const Text(
                     '¿No tienes cuenta? Regístrate aquí',
