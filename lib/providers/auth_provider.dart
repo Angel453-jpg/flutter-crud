@@ -21,17 +21,29 @@ class AuthProvider with ChangeNotifier {
     });
   }
 
-  Future<bool> login(String email, String password) async {
+  Future<String?> login(String email, String password) async {
     try {
       await _authService.login(email, password);
-      return true;
+      return null; //Éxito
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        return 'No existe una cuenta con ese correo.';
+      } else if (e.code == 'wrong-password') {
+        return 'La contraseña incorrecta.';
+      } else if (e.code == 'invalid-email') {
+        return 'Correo electrónico inválido.';
+      } else if (e.code == 'user-disabled') {
+        return 'La cuenta ha sido deshabilitada.';
+      } else {
+        return 'Credenciales inválidas. Intente nuevamente.';
+      }
     } catch (e) {
-      debugPrint('Error al iniciar sesión: $e');
-      return false;
+      debugPrint('Error inesperado al iniciar sesión: $e');
+      return 'Ocurrió un error inesperado. Intente nuevamente más tarde.';
     }
   }
 
-  Future<bool> register({
+  Future<String?> register({
     required String email,
     required String password,
     required String nombre,
@@ -44,10 +56,20 @@ class AuthProvider with ChangeNotifier {
         nombre: nombre,
         apellido: apellido,
       );
-      return true;
+      return null;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'email-already-in-use') {
+        return 'El correo electrónico ya está en uso por otra cuenta.';
+      } else if (e.code == 'invalid-email') {
+        return 'Correo electrónico inválido.';
+      } else if (e.code == 'weak-password') {
+        return 'La contraseña es demasiado débil.';
+      } else {
+        return 'Error al registrar la cuenta. Intente nuevamente.';
+      }
     } catch (e) {
-      debugPrint('Error al registrarse: $e');
-      return false;
+      debugPrint('Error inesperado al registrarse: $e');
+      return 'Ocurrió un error inesperado. Intente nuevamente más tarde.';
     }
   }
 

@@ -37,15 +37,15 @@ class LoginButton extends StatelessWidget {
             if (!formKey.currentState!.validate()) return;
 
             final messenger = ScaffoldMessenger.of(context);
-            final success = await authProvider.login(
+            final errorMessage = await authProvider.login(
               emailController.text.trim(),
               passwordController.text.trim(),
             );
 
-            if (!success) {
+            if (errorMessage != null) {
               if (!context.mounted) return;
               messenger.showSnackBar(
-                const SnackBar(content: Text('❌ Error al iniciar sesión')),
+                SnackBar(content: Text('❌ Error: $errorMessage')),
               );
               return;
             }
