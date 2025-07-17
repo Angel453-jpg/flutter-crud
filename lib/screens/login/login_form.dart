@@ -96,6 +96,15 @@ class _LoginFormState extends State<LoginForm> {
                 const SizedBox(height: 10),
                 TextButton(
                   onPressed: () {
+                    Navigator.pushNamed(context, AppRoutes.forgotPassword);
+                  },
+                  child: const Text(
+                    '¿Olvidaste tu contraseña?',
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
                     Navigator.pushNamed(context, AppRoutes.register);
                   },
                   child: const Text(

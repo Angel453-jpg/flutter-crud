@@ -89,6 +89,18 @@ class AuthProvider with ChangeNotifier {
     return '$nombre $apellido';
   }
 
+  Future<String?> resetPassword(String email) async {
+    try {
+      await _authService.sendPasswordResetEmail(email);
+      return null;
+    } on FirebaseAuthException {
+      return 'Si el correo está registrado, recibirás instrucciones para restablecer tu contraseña.';
+    } catch (e) {
+      debugPrint('Error en resetPassword: $e');
+      return 'Ocurrió un error inesperado.';
+    }
+  }
+
   void markLogoutMessageAsShown() {
     _shouldShowLogoutMessage = false;
   }
