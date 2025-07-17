@@ -20,6 +20,8 @@ class FirestoreService {
       'Modelo': model,
       'Almacenamiento': storage,
       'Precio': price,
+      'log': Timestamp.now(),
+      'logmod': Timestamp.now(),
     });
   }
 
@@ -35,6 +37,7 @@ class FirestoreService {
       'Modelo': model,
       'Almacenamiento': storage,
       'Precio': price,
+      'logmod': Timestamp.now(),
     });
   }
 
