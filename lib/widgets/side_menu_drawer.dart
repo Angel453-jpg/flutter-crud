@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_crud/screens/color_settings_screen.dart';
 import 'package:flutter_crud/screens/theme_settings_screen.dart';
 
 class SideMenuDrawer extends StatelessWidget {
@@ -18,13 +19,23 @@ class SideMenuDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.palette),
-            title: const Text('Temas'),
+            leading: const Icon(Icons.brightness_6),
+            title: const Text('Tema'),
             onTap: () {
               Navigator.of(context).pop();
               Navigator.of(
                 context,
               ).push(MaterialPageRoute(builder: (_) => ThemeSettingsScreen()));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.palette),
+            title: const Text('Color personalizado'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const ColorSettingsScreen()),
+              );
             },
           ),
         ],
