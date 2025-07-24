@@ -14,9 +14,14 @@ class AuthProvider with ChangeNotifier {
 
   bool get shouldShowLogoutMessage => _shouldShowLogoutMessage;
 
+  bool _isInitialized = false;
+
+  bool get isInitialized => _isInitialized;
+
   AuthProvider() {
     _authService.userChanges.listen((u) {
       user = u;
+      _isInitialized = true;
       notifyListeners();
     });
   }
@@ -99,6 +104,10 @@ class AuthProvider with ChangeNotifier {
       debugPrint('Error en resetPassword: $e');
       return 'Ocurrió un error inesperado.';
     }
+  }
+
+  void setShowLogoutMessage(bool value) {
+    _shouldShowLogoutMessage = value;
   }
 
   void markLogoutMessageAsShown() {

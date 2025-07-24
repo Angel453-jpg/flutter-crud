@@ -2,8 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_crud/config/firebase_options.dart';
 import 'package:flutter_crud/providers/auth_provider.dart';
+import 'package:flutter_crud/providers/color_provider.dart';
 import 'package:flutter_crud/providers/theme_provider.dart';
 import 'package:flutter_crud/routes/app_routes.dart';
+import 'package:flutter_crud/theme/app_color.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -15,6 +17,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => ColorProvider()),
       ],
       child: const MyApp(),
     ),
@@ -27,20 +30,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    final authProvider = Provider.of<AuthProvider>(context);
+    final colorProvider = Provider.of<ColorProvider>(context);
 
     return MaterialApp(
-      title: "Flutter CRUD celulares",
+      title: "BluCell",
       debugShowCheckedModeBanner: false,
       themeMode: themeProvider.themeMode,
-      theme: ThemeData(
-        brightness: Brightness.light,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-      ),
-      darkTheme: ThemeData.dark(),
-      initialRoute: authProvider.user == null
-          ? AppRoutes.login
-          : AppRoutes.home,
+      theme: AppColor(
+        selectedColor: colorProvider.selectedColor,
+      ).theme(Brightness.light),
+      darkTheme: AppColor(
+        selectedColor: colorProvider.selectedColor,
+      ).theme(Brightness.dark),
+      initialRoute: AppRoutes.splash,
       routes: AppRoutes.routes,
     );
   }

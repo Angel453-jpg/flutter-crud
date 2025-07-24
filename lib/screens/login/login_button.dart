@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../providers/auth_provider.dart';
 
-class LoginButton extends StatelessWidget {
+class LoginButton extends StatefulWidget {
   final GlobalKey<FormState> formKey;
   final TextEditingController emailController;
   final TextEditingController passwordController;
@@ -15,6 +15,13 @@ class LoginButton extends StatelessWidget {
     required this.emailController,
     required this.passwordController,
   });
+
+  @override
+  State<LoginButton> createState() => _LoginButtonState();
+}
+
+class _LoginButtonState extends State<LoginButton> {
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -33,32 +40,59 @@ class LoginButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
             ),
           ),
-          onPressed: () async {
-            if (!formKey.currentState!.validate()) return;
+          onPressed: isLoading
+              ? null
+              : () async {
+                  if (!widget.formKey.currentState!.validate()) return;
 
-            final messenger = ScaffoldMessenger.of(context);
-            final errorMessage = await authProvider.login(
-              emailController.text.trim(),
-              passwordController.text.trim(),
-            );
+                  setState(() => isLoading = true);
 
-            if (errorMessage != null) {
-              if (!context.mounted) return;
-              messenger.showSnackBar(
-                SnackBar(content: Text('❌ Error: $errorMessage')),
-              );
-              return;
-            }
+                  final messenger = ScaffoldMessenger.of(context);
+                  final errorMessage = await authProvider.login(
+                    widget.emailController.text.trim(),
+                    widget.passwordController.text.trim(),
+                  );
 
-            final nombreCompleto = await authProvider.getUserName();
-            if (!context.mounted) return;
+                  if (errorMessage != null) {
+                    if (!context.mounted) return;
 
-            messenger.showSnackBar(
-              SnackBar(content: Text('✅ Bienvenido(a), $nombreCompleto')),
-            );
-            Navigator.pushReplacementNamed(context, AppRoutes.home);
-          },
-          child: const Text('Iniciar Sesión'),
+                    setState(() {
+                      isLoading = false;
+                    });
+
+                    messenger.showSnackBar(
+                      SnackBar(content: Text('❌ Error: $errorMessage')),
+                    );
+                    return;
+                  }
+
+                  final nombreCompleto = await authProvider.getUserName();
+                  if (!context.mounted) return;
+
+                  messenger.showSnackBar(
+                    SnackBar(content: Text('✅ Bienvenido(a), $nombreCompleto')),
+                  );
+
+                  await Future.delayed(const Duration(seconds: 2));
+
+                  if (!context.mounted) return;
+
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    AppRoutes.home,
+                    (route) => false,
+                  );
+                },
+          child: isLoading
+              ? const SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                    strokeWidth: 2.5,
+                  ),
+                )
+              : const Text('Iniciar Sesión'),
         ),
       ),
     );
