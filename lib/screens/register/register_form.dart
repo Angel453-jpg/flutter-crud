@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_crud/controllers/register_controller.dart';
 import 'package:flutter_crud/providers/auth_provider.dart';
 import 'package:flutter_crud/routes/app_routes.dart';
-import 'package:flutter_crud/controllers/register_controller.dart';
 import 'package:provider/provider.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -32,14 +32,17 @@ class _RegisterFormState extends State<RegisterForm> {
           const SizedBox(height: 30),
           TextFormField(
             controller: widget.controller.nameController,
-            decoration: _inputDecoration('Nombre'),
+            decoration: _inputDecoration('Nombre', icon: Icons.person_outline),
             validator: (v) =>
                 v == null || v.isEmpty ? 'Ingrese su nombre' : null,
           ),
           const SizedBox(height: 20),
           TextFormField(
             controller: widget.controller.lastNameController,
-            decoration: _inputDecoration('Apellido'),
+            decoration: _inputDecoration(
+              'Apellido',
+              icon: Icons.badge_outlined,
+            ),
             validator: (v) =>
                 v == null || v.isEmpty ? 'Ingrese su apellido' : null,
           ),
@@ -47,7 +50,10 @@ class _RegisterFormState extends State<RegisterForm> {
           TextFormField(
             controller: widget.controller.emailController,
             keyboardType: TextInputType.emailAddress,
-            decoration: _inputDecoration('Correo Electrónico'),
+            decoration: _inputDecoration(
+              'Correo Electrónico',
+              icon: Icons.email_outlined,
+            ),
             validator: (value) {
               if (value == null || value.isEmpty) return 'Ingrese su correo';
               final emailRegex = RegExp(r'\S+@\S+\.\S+');
@@ -59,16 +65,19 @@ class _RegisterFormState extends State<RegisterForm> {
           TextFormField(
             controller: widget.controller.passwordController,
             obscureText: _obscurePassword,
-            decoration: _inputDecoration('Contraseña').copyWith(
-              suffixIcon: IconButton(
-                icon: Icon(
-                  _obscurePassword ? Icons.visibility_off : Icons.visibility,
+            decoration: _inputDecoration('Contraseña', icon: Icons.lock_outline)
+                .copyWith(
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscurePassword
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                    ),
+                    onPressed: () => setState(() {
+                      _obscurePassword = !_obscurePassword;
+                    }),
+                  ),
                 ),
-                onPressed: () => setState(() {
-                  _obscurePassword = !_obscurePassword;
-                }),
-              ),
-            ),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Ingrese su contraseña';
@@ -118,7 +127,11 @@ class _RegisterFormState extends State<RegisterForm> {
               icon: const Icon(Icons.arrow_back),
               label: const Text('Regresar'),
               onPressed: () {
-                Navigator.pushReplacementNamed(context, AppRoutes.login);
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  AppRoutes.login,
+                  (route) => false,
+                );
               },
               style: _buttonStyle(),
             ),
@@ -128,10 +141,12 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
-  InputDecoration _inputDecoration(String label) => InputDecoration(
-    labelText: label,
-    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-  );
+  InputDecoration _inputDecoration(String label, {IconData? icon}) =>
+      InputDecoration(
+        labelText: label,
+        prefixIcon: icon != null ? Icon(icon) : null,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+      );
 
   ButtonStyle _buttonStyle() => ElevatedButton.styleFrom(
     backgroundColor: Colors.blue,

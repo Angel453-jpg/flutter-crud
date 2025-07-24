@@ -38,7 +38,10 @@ class AddCellphoneDialog extends StatelessWidget {
               children: [
                 TextFormField(
                   controller: brandController,
-                  decoration: const InputDecoration(labelText: 'Marca'),
+                  decoration: const InputDecoration(
+                    labelText: 'Marca',
+                    prefixIcon: Icon(Icons.business),
+                  ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Campo requerido';
@@ -51,7 +54,10 @@ class AddCellphoneDialog extends StatelessWidget {
                 ),
                 TextFormField(
                   controller: modelController,
-                  decoration: const InputDecoration(labelText: 'Modelo'),
+                  decoration: const InputDecoration(
+                    labelText: 'Modelo',
+                    prefixIcon: Icon(Icons.phone_android),
+                  ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Campo requerido';
@@ -66,6 +72,7 @@ class AddCellphoneDialog extends StatelessWidget {
                   controller: storageController,
                   decoration: const InputDecoration(
                     labelText: 'Almacenamiento',
+                    prefixIcon: Icon(Icons.storage),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -79,7 +86,10 @@ class AddCellphoneDialog extends StatelessWidget {
                 ),
                 TextFormField(
                   controller: priceController,
-                  decoration: const InputDecoration(labelText: 'Precio'),
+                  decoration: const InputDecoration(
+                    labelText: 'Precio',
+                    prefixIcon: Icon(Icons.attach_money),
+                  ),
                   keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value == null || value.isEmpty) {

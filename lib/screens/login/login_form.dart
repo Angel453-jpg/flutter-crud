@@ -39,6 +39,7 @@ class _LoginFormState extends State<LoginForm> {
                   controller: emailController,
                   decoration: InputDecoration(
                     labelText: 'Correo Electrónico',
+                    prefixIcon: const Icon(Icons.email_outlined),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -61,6 +62,7 @@ class _LoginFormState extends State<LoginForm> {
                   obscureText: _obscurePassword,
                   decoration: InputDecoration(
                     labelText: 'Contraseña',
+                    prefixIcon: const Icon(Icons.lock_outline),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),

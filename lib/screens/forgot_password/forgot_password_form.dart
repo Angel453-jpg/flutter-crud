@@ -80,6 +80,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
                   controller: controller.emailController,
                   decoration: InputDecoration(
                     labelText: 'Correo Electrónico',
+                    prefixIcon: const Icon(Icons.email_outlined),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),

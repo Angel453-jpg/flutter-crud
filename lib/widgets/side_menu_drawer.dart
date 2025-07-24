@@ -45,11 +45,19 @@ class SideMenuDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.palette),
+            leading: const Icon(Icons.brightness_6),
             title: const Text('Temas'),
             onTap: () {
               Navigator.of(context).pop();
               Navigator.pushNamed(context, AppRoutes.themeSettings);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.palette),
+            title: const Text('Color personalizado'),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.pushNamed(context, AppRoutes.colorSettings);
             },
           ),
           ListTile(
