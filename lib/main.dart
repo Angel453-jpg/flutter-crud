@@ -4,6 +4,7 @@ import 'package:flutter_crud/firebase_options.dart';
 import 'package:flutter_crud/providers/color_provider.dart';
 import 'package:flutter_crud/providers/theme_provider.dart';
 import 'package:flutter_crud/screens/splash_screen.dart';
+import 'package:flutter_crud/screens/my_home_page.dart'; 
 import 'package:flutter_crud/theme/app_color.dart';
 import 'package:provider/provider.dart';
 
@@ -40,6 +41,11 @@ class MyApp extends StatelessWidget {
       darkTheme: AppColor(
         selectedColor: colorProvider.selectedColor,
       ).theme(Brightness.dark),
+
+      routes: {
+        '/lista-celulares': (context) => const MyHomePage(title: 'Lista de celulares'),
+      },
+
       home: const SplashScreen(),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AddCellphoneDialog extends StatelessWidget {
   final TextEditingController brandController;
@@ -24,8 +25,18 @@ class AddCellphoneDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return AlertDialog(
-      title: Text(isEditing ? 'Editar Celular' : 'Agregar Celular'),
+      title: Text(
+        isEditing ? 'Editar Celular' : 'Agregar Celular',
+        style: GoogleFonts.montserrat(
+          fontWeight: FontWeight.w700,
+          fontSize: 15,
+          color: colorScheme.onSurface,
+        ),
+        textAlign: TextAlign.center,
+      ),
       content: SingleChildScrollView(
         child: ConstrainedBox(
           constraints: BoxConstraints(
@@ -38,9 +49,9 @@ class AddCellphoneDialog extends StatelessWidget {
               children: [
                 TextFormField(
                   controller: brandController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Marca',
-                    prefixIcon: Icon(Icons.business),
+                    prefixIcon: Icon(Icons.business_rounded),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -52,11 +63,12 @@ class AddCellphoneDialog extends StatelessWidget {
                     return null;
                   },
                 ),
+                const SizedBox(height: 16.0),
                 TextFormField(
                   controller: modelController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Modelo',
-                    prefixIcon: Icon(Icons.phone_android),
+                    prefixIcon: Icon(Icons.phone_android_rounded),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -68,11 +80,13 @@ class AddCellphoneDialog extends StatelessWidget {
                     return null;
                   },
                 ),
+                const SizedBox(height: 16.0),
                 TextFormField(
                   controller: storageController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Almacenamiento',
-                    prefixIcon: Icon(Icons.storage),
+                    hintText: 'Ej. 128GB, 1TB',
+                    prefixIcon: Icon(Icons.sd_storage_rounded),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -84,11 +98,13 @@ class AddCellphoneDialog extends StatelessWidget {
                     return null;
                   },
                 ),
+                const SizedBox(height: 16.0),
                 TextFormField(
                   controller: priceController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Precio',
-                    prefixIcon: Icon(Icons.attach_money),
+                    hintText: 'Ej. 599.99',
+                    prefixIcon: Icon(Icons.attach_money_rounded),
                   ),
                   keyboardType: TextInputType.number,
                   validator: (value) {
@@ -99,7 +115,6 @@ class AddCellphoneDialog extends StatelessWidget {
                     if (price == null || price < 0) {
                       return 'Precio inválido';
                     }
-
                     return null;
                   },
                 ),
@@ -108,18 +123,36 @@ class AddCellphoneDialog extends StatelessWidget {
           ),
         ),
       ),
+      actionsAlignment: MainAxisAlignment.center,
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
+          style: TextButton.styleFrom(
+            foregroundColor: colorScheme.onSurfaceVariant,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            textStyle: GoogleFonts.montserrat(fontWeight: FontWeight.w600),
+          ),
           child: const Text("Cancelar"),
         ),
+        const SizedBox(width: 8),
         ElevatedButton(
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               onConfirm();
             }
           },
-          child: Text('Guardar'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: colorScheme.primary,
+            foregroundColor: colorScheme.onPrimary,
+            elevation: 6,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            textStyle: GoogleFonts.montserrat(fontWeight: FontWeight.w600),
+          ),
+          child: Text(isEditing ? 'Actualizar' : 'Guardar'),
         ),
       ],
     );

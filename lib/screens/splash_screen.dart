@@ -29,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen>
     Timer(const Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (_) => const MyHomePage(title: 'Gestion de Celulares'),
+          builder: (_) => const MyHomePage(title: 'Lista de Celulares'),
         ),
       );
     });
